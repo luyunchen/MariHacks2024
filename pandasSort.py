@@ -5,7 +5,7 @@ import main
 from collections import defaultdict
 import os
 import csv
-
+import platform
 # Read data from the CSV file (CHANGE IT TO YOUR DIR)
 df = pd.read_csv('datasets/chix.csv', sep=';')
 
@@ -49,7 +49,8 @@ for filename in os.listdir(directory):
         main.listOfBrokers.append(bankbroker)
 
 # Define the list of column names
-columns = ['name', 'addedOrder', 'executedOrder', 'ratio']
+columns = ['Rank','Name', 'AddedOrder', 'ExecutedOrder', 'Ratio']
+sorted_list_of_brokers = sorted(main.listOfBrokers, key=lambda broker: broker.get_executedOrder(), reverse = True)
 
 # Define the file name for the CSV file
 csv_filename = 'datasets/brokers.csv'
@@ -58,10 +59,26 @@ with open(csv_filename, 'w', newline='') as csvfile:
     # Write the header
     writer.writeheader()
     # Write data for each Broker object
-    for broker in main.listOfBrokers:
-        writer.writerow({'name': broker.get_name(),
-                         'addedOrder': broker.get_addedOrder(),
-                         'executedOrder': broker.get_executedOrder(),
-                         'ratio': broker.get_ratio()})
+    counteri = 0
+    for broker in sorted_list_of_brokers:
+        counteri+=1
+        writer.writerow({'Rank':counteri,
+                         'Name': broker.get_name(),
+                         'AddedOrder': broker.get_addedOrder(),
+                         'ExecutedOrder': broker.get_executedOrder(),
+                         'Ratio': broker.get_ratio()})
 
-print(f"CSV file '{csv_filename}' has been created successfully.")
+relative_path = 'datasets/brokers.csv'
+
+# Construct the absolute path to the file
+absolute_path = os.path.abspath(relative_path)
+
+# Check the platform to determine the appropriate method to open the file
+if platform.system() == 'Windows':
+    os.startfile(absolute_path)
+elif platform.system() == 'Darwin':  # macOS
+    os.system(f'open "{absolute_path}"')
+elif platform.system() == 'Linux':
+    os.system(f'xdg-open "{absolute_path}"')
+else:
+    print(f"Unsupported platform: {platform.system()}. Cannot open file.")
