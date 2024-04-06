@@ -1,7 +1,7 @@
 import pandas as pd
 from collections import defaultdict
 
-# Read data from the CSV file
+# Read data from the CSV file(CHANGE IT TO YOUR DIR)
 df = pd.read_csv('C:/Users/rayan/Desktop/chix.csv', sep=';')
 
 # Create a dictionary to store data for each broker
