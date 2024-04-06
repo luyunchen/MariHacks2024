@@ -1,5 +1,6 @@
 def get_company_name(company_number):
     company_dict = {
+1 : "Anonymous",
 2 : "RBC Capital Markets",
 3 : "ATB Securities Inc",
 4 : "Cantor Fitzgerald Canada Corporation",
@@ -79,8 +80,3 @@ def get_company_name(company_number):
     }
     
     return company_dict.get(company_number, "Unknown Company")
-
-company_number = int(input("Enter the company number: "))
-
-company_name = get_company_name(company_number)
-print(f"Company Name: {company_name}")
