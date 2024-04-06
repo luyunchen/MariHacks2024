@@ -1,5 +1,5 @@
 class Broker:
-    def __init__(self, name, addedOrder, executedOrder, ratio, highestAsk, lowestBid, spread):
+    def __init__(self, name, addedOrder, executedOrder, ratio, highestAsk, lowestBid, spread, overallScore):
         self._name = name
         self._addedOrder = addedOrder
         self._executedOrder = executedOrder
@@ -7,6 +7,7 @@ class Broker:
         self._highestAsk = highestAsk
         self._lowestBid = lowestBid
         self._spread = spread
+        self._overeallScore = overallScore
 
     # Getter method for name
     def get_name(self):
@@ -44,3 +45,8 @@ class Broker:
         return self._lowestBid
     def get_spread(self):
         return self._spread
+    def get_overallScore(self):
+        return self._overeallScore
+    
+    def set_overallScore(self, overallScore):
+        self._overeallScore = overallScore

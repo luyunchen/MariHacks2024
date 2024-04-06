@@ -7,7 +7,7 @@ import os
 import csv
 import platform
 # Read data from the CSV file (CHANGE IT TO YOUR DIR)
-df = pd.read_csv('datasets/chixcopy.csv', sep=';')
+df = pd.read_csv('datasets/chix.csv', sep=';')
 
 # Create a dictionary to store data for each broker
 broker_data = defaultdict(list)
@@ -104,13 +104,29 @@ for filename in os.listdir(directory):
         print(difference)
         print(str(executecounter)+filepath)
         print(str(totalcounter)+filepath)
-        bankbroker = Broker(filename.removesuffix('..csv'),totalcounter,executecounter,(executecounter/totalcounter),highest_buy,lowest_sell,difference)
+        bankbroker = Broker(filename.removesuffix('..csv'),totalcounter,executecounter,(executecounter/totalcounter),highest_buy,lowest_sell,difference,0)
         main.listOfBrokers.append(bankbroker)
 
 # Define the list of column names
-columns = ['Rank','Name', 'AddedOrder', 'ExecutedOrder', 'Ratio', 'Highest Ask', 'Lowest Bid', 'Spread']
-sorted_list_of_brokers = sorted(main.listOfBrokers, key=lambda broker: broker.get_executedOrder(), reverse = True)
+columns = ['Rank','Name','Overall Score', 'AddedOrder', 'ExecutedOrder', 'Ratio', 'Highest Ask', 'Lowest Bid', 'Spread']
+sorted_list_of_brokers_byVolume = sorted(main.listOfBrokers, key=lambda broker: broker.get_executedOrder(), reverse = True)
+sorted_list_of_brokers_byRatio = sorted(main.listOfBrokers, key=lambda broker:broker.get_ratio(), reverse = True)
+sorted_list_of_brokers_bySpread = sorted(main.listOfBrokers, key=lambda broker:broker.get_spread())
 
+list_size = len(main.listOfBrokers)*3
+for index, broker in enumerate(main.listOfBrokers):
+    score = list_size  # Start with the maximum possible score
+    score -= sorted_list_of_brokers_byVolume.index(broker)
+
+    score -= sorted_list_of_brokers_byRatio.index(broker)
+
+    score -= sorted_list_of_brokers_bySpread.index(broker)
+    print(score)
+    broker.set_overallScore(score)
+    print(broker.get_overallScore())
+
+
+sorted_brokers = sorted(main.listOfBrokers, key=lambda broker: broker.get_overallScore(),reverse = True)
 # Define the file name for the CSV file
 csv_filename = 'datasets/brokers.csv'
 with open(csv_filename, 'w', newline='') as csvfile:
@@ -119,10 +135,11 @@ with open(csv_filename, 'w', newline='') as csvfile:
     writer.writeheader()
     # Write data for each Broker object
     counteri = 0
-    for broker in sorted_list_of_brokers:
+    for broker in sorted_brokers:
         counteri+=1
         writer.writerow({'Rank':counteri,
                          'Name': broker.get_name(),
+                         'Overall Score': broker.get_overallScore(),
                          'AddedOrder': broker.get_addedOrder(),
                          'ExecutedOrder': broker.get_executedOrder(),
                          'Ratio': broker.get_ratio(),
