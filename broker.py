@@ -1,8 +1,9 @@
 class Broker:
-    def __init__(self, name, addedOrder, canceledOrder):
+    def __init__(self, name, addedOrder, executedOrder, ratio):
         self._name = name
         self._addedOrder = addedOrder
-        self._canceledOrder = canceledOrder
+        self._executedOrder = executedOrder
+        self._ratio = ratio
 
     # Getter method for name
     def get_name(self):
@@ -21,9 +22,15 @@ class Broker:
         self._addedOrder = addedOrder
 
     # Getter method for canceledOrder
-    def get_canceledOrder(self):
-        return self._canceledOrder
+    def get_executedOrder(self):
+        return self._executedOrder
 
     # Setter method for canceledOrder
-    def set_canceledOrder(self, canceledOrder):
-        self._canceledOrder = canceledOrder
+    def set_executedOrder(self, executedOrder):
+        self._executedOrder = executedOrder
+    
+    def get_ratio(self):
+        return self._ratio
+    
+    def set_ratio(self, ratio):
+        self._ratio = ratio

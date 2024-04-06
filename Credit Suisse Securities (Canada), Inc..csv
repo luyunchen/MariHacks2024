@@ -1,0 +1,5 @@
+time,Msg Type,Time Stamp,Message Type,Order Reference,Buy/Sell Indicator,Shares,Price Decimal,Price,Stock,Broker,Executed Shares,Trade Reference,Contra Order Reference,Trade Attribute,Contra Broker,Cancelled Shares,Cross Type,Settlement Terms,Event Code,Trading State,Listing Market,Board Lot Size,Currency,GEF Eligible
+2020-01-30 11:32:49.295000000,Add Order,1580401969295000000,A,41053055,S,5000.0,24.9,249000.0,XIU,72.0,,,,,,,,,,,,,,
+2020-01-30 11:39:16.106000000,Order Execution,1580402356106000000,E,41053055,,,,,,72.0,4700.0,3288385.0,43615045.0,,2.0,,,,,,,,,
+2020-01-30 14:44:45.387000000,Add Order,1580413485387000000,A,88326102,S,5000.0,24.9,249000.0,XIU,72.0,,,,,,,,,,,,,,
+2020-01-30 14:45:00.562000000,Add Order,1580413500562000000,A,88374930,S,10000.0,24.95,249500.0,XIU,72.0,,,,,,,,,,,,,,
