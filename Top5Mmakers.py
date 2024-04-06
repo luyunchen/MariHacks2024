@@ -41,6 +41,6 @@ def rank_files_by_price_difference(directory_path):
     for rank, (file_path, difference) in enumerate(ranked_files, start=1):
         print(f"{rank}. File: {file_path}, Price Difference: {difference}")
 
-# Example usage
+# Example usage(use your own directory path)
 directory_path = 'C:/Users/rayan/Desktop/MariHacks2024'
 rank_files_by_price_difference(directory_path)
