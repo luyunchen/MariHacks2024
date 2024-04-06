@@ -7,7 +7,7 @@ import os
 import csv
 import platform
 # Read data from the CSV file (CHANGE IT TO YOUR DIR)
-df = pd.read_csv('datasets/chix.csv', sep=';')
+df = pd.read_csv('datasets/chixcopy.csv', sep=';')
 
 # Create a dictionary to store data for each broker
 broker_data = defaultdict(list)
@@ -74,6 +74,8 @@ for filename in os.listdir(directory):
         filepath = os.path.join(directory, filename)
         executecounter = 0
         totalcounter = 0
+        highest_buy = None
+        lowest_sell = None
         # Open the CSV file and read its contents
         with open(filepath, 'r') as file:
             reader = csv.DictReader(file)
@@ -84,13 +86,29 @@ for filename in os.listdir(directory):
                     executecounter += float(row['Executed Shares'])
                 if row['Msg Type'] =='Add Order':
                     totalcounter += float(row['Shares'])
+                buy_sell_indicator = row.get('Buy/Sell Indicator', '')
+                
+                price_str = row.get('Price Decimal', '')
+
+                if buy_sell_indicator == 'B':
+                    price = float(price_str)
+                    if highest_buy is None or price > highest_buy:
+                        highest_buy = price
+                elif buy_sell_indicator == 'S':
+                    price = float(price_str)
+                    if lowest_sell is None or price < lowest_sell:
+                        lowest_sell = price
+
+            if highest_buy is not None and lowest_sell is not None:
+                difference = round(highest_buy - lowest_sell,5)
+        print(difference)
         print(str(executecounter)+filepath)
         print(str(totalcounter)+filepath)
-        bankbroker = Broker(filename.removesuffix('..csv'),totalcounter,executecounter,(executecounter/totalcounter))
+        bankbroker = Broker(filename.removesuffix('..csv'),totalcounter,executecounter,(executecounter/totalcounter),highest_buy,lowest_sell,difference)
         main.listOfBrokers.append(bankbroker)
 
 # Define the list of column names
-columns = ['Rank','Name', 'AddedOrder', 'ExecutedOrder', 'Ratio']
+columns = ['Rank','Name', 'AddedOrder', 'ExecutedOrder', 'Ratio', 'Highest Ask', 'Lowest Bid', 'Spread']
 sorted_list_of_brokers = sorted(main.listOfBrokers, key=lambda broker: broker.get_executedOrder(), reverse = True)
 
 # Define the file name for the CSV file
@@ -107,7 +125,11 @@ with open(csv_filename, 'w', newline='') as csvfile:
                          'Name': broker.get_name(),
                          'AddedOrder': broker.get_addedOrder(),
                          'ExecutedOrder': broker.get_executedOrder(),
-                         'Ratio': broker.get_ratio()})
+                         'Ratio': broker.get_ratio(),
+                         'Highest Ask': broker.get_highestAsk(),
+                         'Lowest Bid': broker.get_lowestBid(),
+                         'Spread': broker.get_spread()
+                         })
 
 relative_path = 'datasets/brokers.csv'
 

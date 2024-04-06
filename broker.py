@@ -1,9 +1,12 @@
 class Broker:
-    def __init__(self, name, addedOrder, executedOrder, ratio):
+    def __init__(self, name, addedOrder, executedOrder, ratio, highestAsk, lowestBid, spread):
         self._name = name
         self._addedOrder = addedOrder
         self._executedOrder = executedOrder
         self._ratio = ratio
+        self._highestAsk = highestAsk
+        self._lowestBid = lowestBid
+        self._spread = spread
 
     # Getter method for name
     def get_name(self):
@@ -34,3 +37,10 @@ class Broker:
     
     def set_ratio(self, ratio):
         self._ratio = ratio
+        
+    def get_highestAsk(self):
+        return self._highestAsk
+    def get_lowestBid(self):
+        return self._lowestBid
+    def get_spread(self):
+        return self._spread
